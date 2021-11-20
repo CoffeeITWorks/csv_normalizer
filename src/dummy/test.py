@@ -11,7 +11,7 @@ new_data = imported_data.reindex(columns=csv_export_headers)
 new_data.to_csv(path_or_buf='new_csv.csv', index=False, sep=";")
 #Todo:
 # Create lib to read tuple, separator, import_folder, export_folder from .ini file [ok]
-# Create class or function to be used. []
+# Create class or function to be used. [ok]
 # Process:
 # Read from folder
 # Perform the modification of export

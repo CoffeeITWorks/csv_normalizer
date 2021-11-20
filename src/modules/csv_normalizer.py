@@ -22,8 +22,8 @@ class Csv_Normalizer:
         self.csv_import_folder = config_dict.get('csv_import_folder')
         self.csv_export_folder = config_dict.get('csv_export_folder')
         self.csv_export_headers = config_dict.get('csv_export_headers')
-        self.csv_delimiter = config_dict.get('csv_delimiter')
-        self.csv_encoding = config_dict.get('csv_encoding')
+        self.csv_delimiter = config_dict.get('csv_delimiter', ";")
+        self.csv_encoding = config_dict.get('csv_encoding', "utf-8")
 
     @staticmethod
     def _import_file(file):
@@ -49,9 +49,29 @@ class Csv_Normalizer:
         """
         export_succeed = True # type: bool
         try:
-            dataset.to_csv(path_or_buf=file, index=False, sep=self.csv_delimiter)
+            dataset.to_csv(path_or_buf=file, index=False, sep=self.csv_delimiter, encoding=self.csv_encoding)
         except:
             export_succeed = False
         
         return export_succeed
 
+    @staticmethod
+    def run(self):
+        """
+        TODO: Create the method
+        run the process, 
+            - scan the directory for .csv files
+            - For each file:
+                - read and Normalize the columns
+                - export to the desired directory the .csv resultant file
+                - rename old to _normalized?
+        """
+
+        # Get the list of the files
+        #iterate over each file
+        # normalize
+
+        # export
+
+        # resume?
+        pass

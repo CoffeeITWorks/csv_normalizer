@@ -1,7 +1,8 @@
 #! python3
 import configparser
-from ..defaults.default_config import set_defaults
 import os
+from ..defaults.default_config import set_defaults
+from collections import defaultdict
 
 
 def parse_config2(filename=None):
@@ -11,7 +12,7 @@ def parse_config2(filename=None):
     :return: config_parse result
     """
 
-    config = configparser.ConfigParser(allow_no_value=True)
+    _config = configparser.ConfigParser(allow_no_value=True)
 
     if filename:
         # ConfigParser does not create a file if it doesn't exist, so I will create an empty one.
@@ -19,9 +20,9 @@ def parse_config2(filename=None):
             with open(filename, 'w', encoding='utf-8') as f:
                 print('', file=f)
 
-        config.read_file(open(filename))
+        _config.read_file(open(filename))
 
-    return config
+    return _config
 
 
 def get_all_config(filename=None):
@@ -30,10 +31,10 @@ def get_all_config(filename=None):
     Config with defaults settings if no file will be passed
     Also with defaults sections and defaults keys for missing options in config
     :param filename: options config file to read
-    :return: config with default config for missing sections
+    :return: configparser object with default config for missing sections
     """
 
-    config = parse_config2(filename)
+    _config = parse_config2(filename)
     default_config = set_defaults()
 
     # Verify each section in default_config
@@ -41,12 +42,28 @@ def get_all_config(filename=None):
         section = default_config.sections()[s]
 
         # Add the missing section to the config obtained
-        if not config.has_section(section):
-            config.add_section(section)
+        if not _config.has_section(section):
+            _config.add_section(section)
 
         # Add missing keys to config obtained
         for key in default_config[section]:
-            if not config.has_option(section, key):
-                config[section][key] = default_config[section][key]
+            if not _config.has_option(section, key):
+                _config[section][key] = default_config[section][key]
 
-    return config
+    return _config
+
+def get_all_config_dict(filename=None):
+    """
+    :param filename: filename to parse
+    :return: dict with options from config file common section or defaults
+    """
+    _config_parse_obj = get_all_config(filename=filename) # type: object
+    _options = defaultdict(dict) # type: dict
+
+    # Use general section for general options:
+    if _config_parse_obj.has_section('common'):
+        general_config = _config_parse_obj['common']
+    else:
+        general_config = {}
+
+    return _options

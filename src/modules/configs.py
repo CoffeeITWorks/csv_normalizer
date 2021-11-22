@@ -62,8 +62,8 @@ def get_all_config_dict(filename=None):
 
     # Use general section for general options:
     if _config_parse_obj.has_section('common'):
-        general_config = _config_parse_obj['common']
+        _options = _config_parse_obj['common']
     else:
-        general_config = {}
+        _options = {}
 
     return _options

@@ -1,5 +1,8 @@
 # CSV Normalizer main class
 import pandas as pd
+import os
+import file_processing
+import collections
 
 class Csv_Normalizer:
     def __init__(self, config_dict) -> None:
@@ -55,7 +58,6 @@ class Csv_Normalizer:
         
         return export_succeed
 
-    @staticmethod
     def run(self):
         """
         TODO: Create the method
@@ -65,13 +67,31 @@ class Csv_Normalizer:
                 - read and Normalize the columns
                 - export to the desired directory the .csv resultant file
                 - rename old to _normalized?
+        # return summary defaultdict
+            {'filename.csv': {
+                'succeed': True/False,
+                'export_path': '/full/path/filename.csv'
+            }}
         """
+        _summary_dict = collections.defaultdict(dict) # type: dict
 
         # Get the list of the files
+        _files_list = file_processing.get_file_list(self.csv_import_folder, extension='*.csv')
         #iterate over each file
-        # normalize
+        for file in _files_list:
+            _pd_imported_data = self._import_file(file)
+            # normalize
+            _pd_normalized_data = self._normalize_data(_pd_imported_data)
+            # exported path
+            _basename_file = os.path.basename(file)
+            _export_path_file = os.path.join(self.csv_export_folder, _basename_file)
+            # export
+            _export_result_bool = self._export_csv(_pd_normalized_data,
+                                                   # Use export path joining csv_export_folder with original name of file
+                                                   file=_export_path_file
+                                                   )
+            _summary_dict[_basename_file]['succeess'] = _export_result_bool
+            _summary_dict[_basename_file]['export_path'] = _export_path_file
 
-        # export
-
-        # resume?
-        pass
+        # return summary defaultdict
+        return _summary_dict

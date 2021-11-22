@@ -68,12 +68,24 @@ class Csv_Normalizer:
                 - export to the desired directory the .csv resultant file
                 - rename old to _normalized?
         # return summary defaultdict
-            {'filename.csv': {
-                'succeed': True/False,
-                'export_path': '/full/path/filename.csv'
-            }}
+            {'ok': [{
+                'import_path': '/full/path/origfile.csv'
+                'export_path': '/full/path/filename.csv'},{
+                'import_path': '/full/path/origfile.csv'
+                'export_path': '/full/path/filename.csv'}]
+             'failed': [{'import_path': '/full/path/origfile.csv'
+                'export_path': '/full/path/filename.csv'},{
+                'import_path': '/full/path/origfile.csv'
+                'export_path': '/full/path/filename.csv'}]
+            }
+            When no data, default dict is:
+            {'ok': []
+             'failed': []}
         """
         _summary_dict = collections.defaultdict(dict) # type: dict
+        _suymmary_dict = {'ok': []
+             'failed': []
+        }
 
         # Get the list of the files
         _files_list = file_processing.get_file_list(self.csv_import_folder, extension='*.csv')
@@ -90,8 +102,13 @@ class Csv_Normalizer:
                                                    # Use export path joining csv_export_folder with original name of file
                                                    file=_export_path_file
                                                    )
-            _summary_dict[_basename_file]['succeess'] = _export_result_bool
-            _summary_dict[_basename_file]['export_path'] = _export_path_file
+            if _export_result_bool:
+                _summary_dict['ok'].append({'import_path': file,
+                                           'export_path': _export_path_file}) 
+            else:
+                _summary_dict['failed'].append({'import_path': file,
+                                           'export_path': _export_path_file}) 
+            
 
         # return summary defaultdict
         return _summary_dict

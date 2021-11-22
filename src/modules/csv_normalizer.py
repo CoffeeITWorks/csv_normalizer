@@ -79,11 +79,11 @@ class Csv_Normalizer:
                 'export_path': '/full/path/filename.csv'}]
             }
             When no data, default dict is:
-            {'ok': []
+            {'ok': [],
              'failed': []}
         """
         _summary_dict = collections.defaultdict(dict) # type: dict
-        _suymmary_dict = {'ok': []
+        _suymmary_dict = {'ok': [],
              'failed': []
         }
 

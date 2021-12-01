@@ -4,7 +4,6 @@ import os
 from ..defaults.default_config import set_defaults
 from collections import defaultdict
 
-
 def parse_config2(filename=None):
     """
     https://docs.python.org/3.5/library/configparser.html
@@ -24,10 +23,26 @@ def parse_config2(filename=None):
 
     return _config
 
+def get_all_config_dict(filename=None):
+    """
+    Main function to get the configs from config file
+    :param filename: filename to parse
+    :return: dict with options from config file common section or defaults
+    """
+    _config_parse_obj = get_all_config(filename=filename) # type: object
+    _options = defaultdict(dict) # type: dict
+
+    # Use general section for general options:
+    if _config_parse_obj.has_section('common'):
+        _options = _config_parse_obj['common']
+    else:
+        _options = {}
+
+    return _options
 
 def get_all_config(filename=None):
     """
-    Set default configuration for burp_reports
+    Set default configuration options for configparse
     Config with defaults settings if no file will be passed
     Also with defaults sections and defaults keys for missing options in config
     :param filename: options config file to read
@@ -51,19 +66,3 @@ def get_all_config(filename=None):
                 _config[section][key] = default_config[section][key]
 
     return _config
-
-def get_all_config_dict(filename=None):
-    """
-    :param filename: filename to parse
-    :return: dict with options from config file common section or defaults
-    """
-    _config_parse_obj = get_all_config(filename=filename) # type: object
-    _options = defaultdict(dict) # type: dict
-
-    # Use general section for general options:
-    if _config_parse_obj.has_section('common'):
-        _options = _config_parse_obj['common']
-    else:
-        _options = {}
-
-    return _options

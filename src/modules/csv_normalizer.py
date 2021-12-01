@@ -60,7 +60,6 @@ class Csv_Normalizer:
 
     def run(self):
         """
-        TODO: Create the method
         run the process, 
             - scan the directory for .csv files
             - For each file:
@@ -107,8 +106,7 @@ class Csv_Normalizer:
                                            'export_path': _export_path_file}) 
             else:
                 _summary_dict['failed'].append({'import_path': file,
-                                           'export_path': _export_path_file}) 
-            
+                                           'export_path': _export_path_file})
 
         # return summary defaultdict
         return _summary_dict

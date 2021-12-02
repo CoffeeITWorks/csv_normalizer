@@ -23,18 +23,23 @@ def parse_config2(filename=None):
 
     return _config
 
-def get_all_config_dict(filename=None):
+def get_common_config_dict(filename=None):
     """
     Main function to get the configs from config file
     :param filename: filename to parse
-    :return: dict with options from config file common section or defaults
+    :return: only common section content in dict 
     """
     _config_parse_obj = get_all_config(filename=filename) # type: object
     _options = defaultdict(dict) # type: dict
 
     # Use general section for general options:
     if _config_parse_obj.has_section('common'):
-        _options = _config_parse_obj['common']
+        for key in _config_parse_obj['common']:
+            # convert string to tuple in case of list of columns
+            if key == 'csv_export_headers':
+                _options[key] = eval(_config_parse_obj['common'][key])
+            else:
+                _options[key] = _config_parse_obj['common'][key]
     else:
         _options = {}
 

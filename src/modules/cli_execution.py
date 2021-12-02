@@ -1,10 +1,10 @@
 # This Python file uses the following encoding: utf-8
 import configparser
-import configs
-import csv_normalizer
-import argparse
 import os
 import pprint
+import argparse
+from . import configs
+from . import csv_normalizer
 
 def parse_args(args):
     """
@@ -27,6 +27,8 @@ def parse_args(args):
 
     parser.add_argument('--write_config', dest='write_config', default=None, action='store_true',
                         help="Write configuration with default values, useful to get a config file to modify")
+    #TODO: Add option to delete already processed files
+    #TODO: Add option to rename already processed files
 
     if not args:
         raise SystemExit(parser.print_help())
@@ -42,18 +44,22 @@ def cli_execution(argparse_options):
     """
 
     # Configs that can be overwritten by command line options
-    config_options_dict = configs.get_all_config_dict(argparse_options.config_ini)
+    config_options = configs.get_all_config(argparse_options.config_ini)
+    config_options_dict = configs.get_common_config_dict(argparse_options.config_ini)
 
     if argparse_options.write_config:
         if not argparse_options.config_ini:
             raise SystemExit('--write_config requires -c config_file.ini')
 
         with open(argparse_options.config_ini, 'w', encoding='utf-8') as f:
-            config_options_dict.write(f, space_around_delimiters=True)
+            config_options.write(f, space_around_delimiters=True)
+            raise SystemExit(f'Configuration written to {argparse_options.config_ini}')
     
     # Initiate csv_normalizer objet to work with it.
-    csv_normalizer_obj = csv_normalizer.Csv_Normalizer(config_dict=config_options_dict['common'])
+    csv_normalizer_obj = csv_normalizer.Csv_Normalizer(config_dict=config_options_dict)
     # Execute the process
     summary_execution_dict = csv_normalizer_obj.run()
     # Just print summary result dict in pprint
-    pprint.PrettyPrinter(summary_execution_dict)
+    pprint.pprint(
+        dict(summary_execution_dict)
+        )

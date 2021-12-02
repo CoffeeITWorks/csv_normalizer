@@ -1,8 +1,8 @@
 # CSV Normalizer main class
 import pandas as pd
 import os
-import file_processing
 import collections
+from . import file_processing
 
 class Csv_Normalizer:
     def __init__(self, config_dict) -> None:
@@ -82,9 +82,8 @@ class Csv_Normalizer:
              'failed': []}
         """
         _summary_dict = collections.defaultdict(dict) # type: dict
-        _suymmary_dict = {'ok': [],
-             'failed': []
-        }
+        _summary_dict['ok'] = []
+        _summary_dict['failed'] = []
 
         # Get the list of the files
         _files_list = file_processing.get_file_list(self.csv_import_folder, extension='*.csv')

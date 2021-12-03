@@ -3,9 +3,9 @@ import pandas as pd
 import os
 import collections
 from . import file_processing
-
+from pathlib import Path
 class Csv_Normalizer:
-    def __init__(self, config_dict) -> None:
+    def __init__(self, config_dict, rename_old = True) -> None:
         """
         :param: config_dict
         {
@@ -27,6 +27,14 @@ class Csv_Normalizer:
         self.csv_export_headers = config_dict.get('csv_export_headers')
         self.csv_delimiter = config_dict.get('csv_delimiter', ";")
         self.csv_encoding = config_dict.get('csv_encoding', "utf-8")
+        self.rename_old = rename_old
+
+        _export_folder = Path(self.csv_export_folder)
+        if _export_folder.is_dir():
+            pass
+        else:
+            raise SystemExit('Error: no folder: {self.csv_export_folder}'
+                             'Ensure you use slashes / to separate folders')
 
     @staticmethod
     def _import_file(file):
@@ -102,7 +110,10 @@ class Csv_Normalizer:
                                                    )
             if _export_result_bool:
                 _summary_dict['ok'].append({'import_path': file,
-                                           'export_path': _export_path_file}) 
+                                           'export_path': _export_path_file})
+                # Rename old file
+                if self.rename_old:
+                    file_processing.rename_file(file, f'{file}.old')
             else:
                 _summary_dict['failed'].append({'import_path': file,
                                            'export_path': _export_path_file})

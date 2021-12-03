@@ -5,9 +5,23 @@ def get_file_list(directory, extension='*.csv'):
     return: files list found in directory using absolut path 
     """
     path_obj = Path(directory) # type string
-
     file_list = [] # type list
-    for filename in path_obj.glob(extension):
-        file_list.append(str(filename.resolve()))
+
+    if path_obj.is_dir():
+        for filename in path_obj.glob(extension):
+            file_list.append(str(filename.resolve()))
+    else:
+        raise SystemExit('ERROR: not a directory: {directory}'
+                         'Ensure you use slashes / to separate folders')
     
     return file_list
+
+def rename_file(file, target):
+    """
+    param file: file to rename
+    param target: target path
+    return: PosixPath('target') rename operation
+    """
+    path_obj = Path(file)
+    target = Path(target)
+    return path_obj.rename(target)

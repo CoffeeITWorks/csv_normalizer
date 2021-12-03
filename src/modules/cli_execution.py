@@ -27,8 +27,7 @@ def parse_args(args):
 
     parser.add_argument('--write_config', dest='write_config', default=None, action='store_true',
                         help="Write configuration with default values, useful to get a config file to modify")
-    #TODO: Add option to delete already processed files
-    #TODO: Add option to rename already processed files
+    #TODO: add parameter to not rename files
 
     if not args:
         raise SystemExit(parser.print_help())

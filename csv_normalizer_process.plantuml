@@ -1,0 +1,16 @@
+@startuml
+title Normalize csv process 
+
+start
+
+:Get list of .csv files in a directory (import_folder);
+repeat
+    :normalize content;
+    :rename old by default;
+    :export normalized to export_folder;
+repeat while (for each file)
+:return dict with result;
+
+stop
+
+@enduml

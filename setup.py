@@ -26,7 +26,7 @@ mypackage_root_dir = 'src'
 version = __version__
 
 # Get the long description from the relevant file
-readme_path = path.join(here_path, 'README.rst')
+readme_path = path.join(here_path, 'README.md')
 with open(readme_path, encoding='utf-8') as f:
     long_description = f.read()
 
@@ -34,7 +34,8 @@ with open(readme_path, encoding='utf-8') as f:
 setup(name='csv_normalizer',
       version=version,
       description='csv normalize to have always same output csv',
-      long_description=long_description,  # this is the file README.rst
+      long_description_content_type="text/markdown",
+      long_description=long_description,  # this is the file README.md
       # https://pypi.org/classifiers/
       classifiers=[
           'Development Status :: 5 - Production/Stable',

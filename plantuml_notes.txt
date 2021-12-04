@@ -1,0 +1,4 @@
+To update the image: 
+py -m plantuml .\csv_normalizer_process.plantuml
+
+https://pythonhosted.org/plantuml/

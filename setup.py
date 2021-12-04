@@ -54,7 +54,8 @@ setup(name='csv_normalizer',
       packages=find_packages(),
       include_package_data=True,
       package_data={
-          'data': ['src/dummy/*']
+          'data': ['src/dummy/*'],
+          'normalizer_process_png': ['csv_normalizer_process.png']
       },
       entry_points={
           'console_scripts': [

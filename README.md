@@ -99,7 +99,7 @@ pip install --user csv_normalizer
 
 # or for root account
 
-pip install --user csv_normalizer
+pip install csv_normalizer
 ```
 
 ******

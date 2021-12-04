@@ -5,7 +5,7 @@ import collections
 from . import file_processing
 from pathlib import Path
 class Csv_Normalizer:
-    def __init__(self, config_dict, rename_old = True) -> None:
+    def __init__(self, config_dict, no_rename_old = False) -> None:
         """
         :param: config_dict
         {
@@ -20,6 +20,8 @@ class Csv_Normalizer:
             # use mbcs for ansi on python prior 3.6
             'csv_encoding': 'utf-8',
         }
+        param: no_rename_old
+                Set to true if you don't want to rename the old file
 
         """
         self.csv_import_folder = config_dict.get('csv_import_folder')
@@ -27,14 +29,19 @@ class Csv_Normalizer:
         self.csv_export_headers = config_dict.get('csv_export_headers')
         self.csv_delimiter = config_dict.get('csv_delimiter', ";")
         self.csv_encoding = config_dict.get('csv_encoding', "utf-8")
-        self.rename_old = rename_old
+        self.no_rename_old = no_rename_old
 
         _export_folder = Path(self.csv_export_folder)
         if _export_folder.is_dir():
             pass
         else:
-            raise SystemExit('Error: no folder: {self.csv_export_folder}'
-                             'Ensure you use slashes / to separate folders')
+            msg = (f"Error: export folder is not a directory: {self.csv_export_folder} \n"
+                             )
+            raise SystemExit(msg)
+
+        if self.csv_export_folder == self.csv_import_folder:
+            raise SystemExit(f'Same folder for import and export is not yet supported \n'
+                             'If you need support, create issue requesting it')
 
     @staticmethod
     def _import_file(file):
@@ -112,7 +119,7 @@ class Csv_Normalizer:
                 _summary_dict['ok'].append({'import_path': file,
                                            'export_path': _export_path_file})
                 # Rename old file
-                if self.rename_old:
+                if not self.no_rename_old:
                     file_processing.rename_file(file, f'{file}.old')
             else:
                 _summary_dict['failed'].append({'import_path': file,

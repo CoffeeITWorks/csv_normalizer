@@ -11,8 +11,8 @@ def get_file_list(directory, extension='*.csv'):
         for filename in path_obj.glob(extension):
             file_list.append(str(filename.resolve()))
     else:
-        raise SystemExit('ERROR: not a directory: {directory}'
-                         'Ensure you use slashes / to separate folders')
+        raise SystemExit(f"ERROR: import_folder is not a directory: {directory} \n"
+                         "Ensure you use slashes / to separate folders")
     
     return file_list
 

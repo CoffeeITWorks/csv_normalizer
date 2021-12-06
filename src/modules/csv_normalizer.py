@@ -43,12 +43,13 @@ class Csv_Normalizer:
             raise SystemExit(f'Same folder for import and export is not yet supported \n'
                              'If you need support, create issue requesting it')
 
-    @staticmethod
-    def _import_file(file):
+    def _import_file(self, file):
         """
+        param: file: file to read from csv to pandas
+        param: sep: separator, default ;
         Read the .csv file and return pandas Dataset.
         """
-        imported_data = pd.read_csv(file)
+        imported_data = pd.read_csv(file, sep=self.csv_delimiter)
         return imported_data
     
     def _normalize_data(self, dataset):
@@ -104,7 +105,7 @@ class Csv_Normalizer:
         _files_list = file_processing.get_file_list(self.csv_import_folder, extension='*.csv')
         #iterate over each file
         for file in _files_list:
-            _pd_imported_data = self._import_file(file)
+            _pd_imported_data = self._import_file(file=file)
             # normalize
             _pd_normalized_data = self._normalize_data(_pd_imported_data)
             # exported path

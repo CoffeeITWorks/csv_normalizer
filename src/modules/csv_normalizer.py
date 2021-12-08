@@ -29,6 +29,7 @@ class Csv_Normalizer:
         self.csv_export_headers = config_dict.get('csv_export_headers')
         self.csv_delimiter = config_dict.get('csv_delimiter', ";")
         self.csv_encoding = config_dict.get('csv_encoding', "utf-8")
+        self.dtype = config_dict.get('dtype', {})
         self.no_rename_old = no_rename_old
 
         _export_folder = Path(self.csv_export_folder)
@@ -49,7 +50,9 @@ class Csv_Normalizer:
         param: sep: separator, default ;
         Read the .csv file and return pandas Dataset.
         """
-        imported_data = pd.read_csv(file, sep=self.csv_delimiter)
+        imported_data = pd.read_csv(file, sep=self.csv_delimiter,
+                                    dtype=self.dtype
+                                    )
         return imported_data
     
     def _normalize_data(self, dataset):

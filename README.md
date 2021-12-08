@@ -57,6 +57,11 @@ csv_export_folder = C:/temp/csv_export
 csv_export_headers = 'Series_reference', 'Period', 'ELEE'
 csv_delimiter = ;
 csv_encoding = utf-8
+# You can use column types, like int64, np.float64 if you want to specify
+ # Or you can use type object if you don't want conversion or avoid NaN errors
+# https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html
+# example: {'column name': 'object'}
+'dtype' = {}
 ```
 
 *****

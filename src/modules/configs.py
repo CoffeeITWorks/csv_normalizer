@@ -35,14 +35,14 @@ def get_common_config_dict(filename=None):
     # Use general section for general options:
     if _config_parse_obj.has_section('common'):
         for key in _config_parse_obj['common']:
-            # convert string to tuple in case of list of columns
-            if key == 'csv_export_headers':
+            # convert string to tuple or dict 
+            # in case of list of columns or dict in config
+            if key == 'csv_export_headers' or key == 'dtype':
                 _options[key] = eval(_config_parse_obj['common'][key])
             else:
                 _options[key] = _config_parse_obj['common'][key]
     else:
         _options = {}
-
     return _options
 
 def get_all_config(filename=None):

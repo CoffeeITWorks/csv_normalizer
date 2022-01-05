@@ -1,3 +1,4 @@
+0.1.4 fix to open config as utf-8 always
 0.1.3 add option to specify dtype to avoid conversions
 0.1.2 fix to define separator on the import csv
 0.1.1 small fix to Readme

@@ -19,7 +19,7 @@ def parse_config2(filename=None):
             with open(filename, 'w', encoding='utf-8') as f:
                 print('', file=f)
 
-        _config.read_file(open(filename))
+        _config.read_file(open(filename, encoding='utf-8'))
 
     return _config
 
